@@ -1,0 +1,25 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/gcloud-training-4135298-bs7/gcp-training-bike-model/bank_campaign_model', '.']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/gcloud-training-4135298-bs7/gcp-training-bike-model/bank_campaign_model']
+
+# - name: 'us-central1-docker.pkg.dev/gcloud-training-4135298-bs7/gcp-training-bike-model/bank_campaign_model'
+#   entrypoint: 'bash'
+#   args:
+#    - '-c'
+#    - |
+#       python -m pytest
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/sandhanphinix/gcp-training-trigger.git']
+
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', 'gcp-training-trigger/bank_campaign_model_training.py', 'gs://us-central1-gcp-training-ml-74ff423c-bucket/dags']
+
+images:
+- 'us-central1-docker.pkg.dev/gcloud-training-4135298-bs7/gcp-training-bike-model/bank_campaign_model'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
